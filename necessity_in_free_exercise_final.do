@@ -92,6 +92,9 @@ by time: egen miky_crash= mean(crashes) if state==1 | state==2
 
 sort time crashes
 
+*additional help to get curly quotes in x-axis years
+local rsq = ustrunescape("\u2019") // right single curly quote
+
 twoway ///
     (connected ohio_crash time, lcolor(black) mcolor(black)) ///
     (connected miky_crash time, lcolor(gs8) mcolor(gs8)) ///
@@ -103,6 +106,7 @@ xline(753, lpattern(dash) lcolor(black))
 
 graph export figure1.eps, as(eps) replace
 
+local rsq = ustrunescape("\u2019") // right single curly quote
 
 twoway ///
     (lfit miky_crash time if time<=752, lcolor(gs8) mcolor(gs8) legend(label(1 ""))) ///
@@ -122,5 +126,6 @@ graph export figure2.eps, as(eps) replace
 
 ************
 eststo crash1: reg crashes treat_post treat post
+
 
 esttab crash1 using did_crash.tex, mtitle("Total Crashes") drop(_cons) label title(Avg Monthly Crashes) stats(N, label("Total Observations")) replace
